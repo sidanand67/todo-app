@@ -9,14 +9,31 @@
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    <form onsubmit="event.preventDefault()">
-        <input type="text" id="user-input" placeholder="Create task">
-        <button id="add-btn">Add</button>
-    </form>
-    <section>
-        <ul id="item-list">
+    <section id="list-component">
+        <h1>Create List</h1>
+        <form onsubmit="event.preventDefault()">
+            <input type="text" id="list-name" placeholder="Create list">
+            <button id="create-btn">Create</button>
+        </form>
 
-        </ul>
+        <section>
+            <ul id="list-render"> 
+
+            </ul>
+        </section>
+    </section>
+    
+    <section id="task-component" style="display: none">
+        <h1>Create Task</h1>
+        <form onsubmit="event.preventDefault()">
+            <input type="text" id="user-input" placeholder="Create task">
+            <button id="add-btn">Add</button>
+        </form>
+        <section>
+            <ul id="item-list">
+    
+            </ul>
+        </section>
     </section>
     <script src="./script.js"></script>
 </body>
