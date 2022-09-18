@@ -75,6 +75,38 @@ const todoApp = (
             todoApp.viewLists(); 
         }
 
+        let updateTask = (listId, taskId, taskInput) => {
+            let listIndex = lists.findIndex(list => list.id == listId); 
+
+            lists[listIndex].tasks.forEach(task => {
+                if(task.taskId == taskId){
+                    task.task = taskInput; 
+                }
+            }); 
+
+            todoApp.displayList(listId); 
+        }
+
+        let deleteTask = (listId, taskId) => {
+            let listIndex = lists.findIndex(list => list.id == listId); 
+            let taskIndex = lists[listIndex].tasks.findIndex(task => task.taskId == taskId); 
+
+            lists[listIndex].tasks.splice(taskIndex, 1); 
+
+            todoApp.displayList(listId); 
+        }
+
+        let toggleTaskStatus = (listId, taskId) => {
+            let listIndex = lists.findIndex(list => list.id == listId); 
+            let taskIndex = lists[listIndex].tasks.findIndex(task => task.taskId == taskId); 
+
+            let isDoneValue = lists[listIndex].tasks[taskIndex].isDone; 
+        
+            lists[listIndex].tasks[taskIndex].isDone = !isDoneValue; 
+
+            todoApp.displayList(listId); 
+        }
+
         return {
             createList(listInput){
                 let listObj = {}; 
@@ -105,73 +137,65 @@ const todoApp = (
                     listInputEl.value = ""; 
 
                     editIcon.addEventListener('click', (event) => {
-                        let listContent = event.target.previousElementSibling;
-                        let listId = event.target.parentElement.id; 
-                        
                         let listInput = prompt("Edit List Name: "); 
-
-                        updateList(listId, listInput); 
+                        updateList(list.id, listInput); 
                     }); 
 
                     delIcon.addEventListener("click", (event) => {
-                        let listId = event.target.parentElement.id; 
-
-                        deleteList(listId); 
+                        deleteList(list.id); 
                     }); 
                 }); 
             }, 
 
             displayList(listId){
-                itemListEl.innerHTML = ""; 
-                lists.filter(list => list.id == listId)[0].listContent.map(list => {
+                itemListEl.innerHTML = "";
+                lists.filter(list => list.id == listId)[0].tasks.map(task => {
                     let itemContainerEl = document.createElement("li");
+                    let checkBoxEl = document.createElement('input'); 
                     let itemEl = document.createElement("span");
                     let editIcon = document.createElement("i");
                     let delIcon = document.createElement("i");
 
+                    checkBoxEl.setAttribute("type", "checkbox"); 
+                    checkBoxEl.checked = task.isDone; 
                     editIcon.classList.add("fa-solid", "fa-pen");
                     delIcon.classList.add("fa-solid", "fa-trash");
                     
-                    itemContainerEl.setAttribute('id', list.taskId); 
-                    itemEl.textContent = list.task; 
+                    itemContainerEl.setAttribute('id', task.taskId); 
+                    itemEl.textContent = task.task; 
                     itemContainerEl.append(
+                        checkBoxEl, 
                         itemEl,
                         editIcon,
                         delIcon
                     );
                     itemListEl.appendChild(itemContainerEl);
 
-                    // editIcon.addEventListener("click", (event) => {
-                    //     let itemContent = event.target.previousElementSibling;
-                    //     inputEl.value = itemContent.textContent;
-                    //     lists[listId - 1].listContent.splice(itemContent.id, 1);
-                    //     event.target.parentElement.remove();
-                    // });
+                    checkBoxEl.addEventListener("click", (event) => {
+                        toggleTaskStatus(listId, task.taskId); 
+                    })
 
-                    // delIcon.addEventListener("click", (event) => {
-                    //     let itemId = event.target.parentElement.id;
-                    //     let result = lists.filter(list => list.id == listId)[0].listContent.filter(task => task.taskId == itemId);
-                    //     itemContainerEl.remove();
-                    // }); 
+                    editIcon.addEventListener("click", (event) => {
+                        let taskInput = prompt("Edit your task"); 
+                        updateTask(listId, task.taskId, taskInput); 
+                    });
+
+                    delIcon.addEventListener("click", (event) => {
+                        deleteTask(listId, task.taskId); 
+                    }); 
                 }); 
-                return listId; 
             },
 
-            addItem(listId){
-                let itemObj = {}; 
-                // itemObj.taskId = 
-                itemObj.task = taskInputEl.value; 
-                itemObj.isDone = false; 
-                lists.filter(list => list.id == listId)[0].listContent.push(itemObj); 
-                taskInputEl.value=""; 
-                this.displayList(listId); 
-            }, 
+            addItem(listId, taskInput){
+                let listIndex = lists.findIndex(list => list.id == listId); 
+                let taskObj = {}; 
+                taskObj.id = lists[listIndex].tasks.length+1; 
+                taskObj.task = taskInput; 
+                taskObj.isDone = false; 
+                lists[listIndex].tasks.push(taskObj); 
 
-            toggleItemStatus(event){
-                if(event.target.tagName === 'SPAN'){
-                    event.target.classList.toggle('checked'); 
-                }
-            }, 
+                todoApp.displayList(listId); 
+            }
         };
     }
 )(); 
@@ -188,11 +212,13 @@ createListBtnEl.addEventListener('click', () => {
 }); 
 
 listRenderEl.addEventListener('click', (event) => {
-    listId = todoApp.displayList(event.target.id);  
+    listId = event.target.parentElement.id; 
+    todoApp.displayList(listId);  
 }); 
 
 addBtnEl.addEventListener("click", () => {
-    todoApp.addItem(listId); 
+    if (taskInputEl.value.length > 0){
+        todoApp.addItem(listId, taskInputEl.value); 
+        taskInputEl.value = ""; 
+    }
 }); 
-
-itemListEl.addEventListener("click", todoApp.toggleItemStatus); 
