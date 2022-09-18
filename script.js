@@ -117,19 +117,25 @@ const todoApp = (
             viewLists(){
                 listRenderEl.innerHTML = ""; 
                 lists.map(list => {
+                    let listDiv = document.createElement('div'); 
                     let listEl = document.createElement("li");
-                    let listNameEl = document.createElement("span");
-                    listEl.setAttribute("id", list.id);
+                    let listNameEl = document.createElement("p");
+                    listDiv.setAttribute("id", list.id);
                     listNameEl.textContent = list.listName;
 
-                    let editIcon = document.createElement("i");
-                    let delIcon = document.createElement("i");
+                    let editIcon = document.createElement("button");
+                    let delIcon = document.createElement("button");
 
-                    editIcon.classList.add("fa-solid", "fa-pen");
-                    delIcon.classList.add("fa-solid", "fa-trash");
+                    listEl.classList.add('list-group-item', 'd-flex', 'align-items-center');
+                    listNameEl.classList.add('fs-4', 'm-0', 'me-auto'); 
+                    editIcon.classList.add('btn', 'btn-primary', 'me-2'); 
+                    editIcon.innerHTML = `<i class="fa-solid fa-pencil"></i>`; 
+                    delIcon.innerHTML = `<i class="fa-solid fa-trash-can"></i>`; 
+                    delIcon.classList.add('btn', 'btn-danger'); 
 
-                    listEl.append(listNameEl, editIcon, delIcon);
-                    listRenderEl.append(listEl);
+                    listEl.append(listNameEl, editIcon, delIcon); 
+                    listDiv.append(listEl);
+                    listRenderEl.appendChild(listDiv);
                     listInputEl.value = ""; 
 
                     editIcon.addEventListener('click', () => {
@@ -146,18 +152,24 @@ const todoApp = (
             displayList(listId){
                 taskListEl.innerHTML = "";
                 lists.filter(list => list.id == listId)[0].tasks.map(task => {
+                    let taskDiv = document.createElement('div'); 
                     let taskContainerEl = document.createElement("li");
                     let checkBoxEl = document.createElement('input'); 
-                    let taskEl = document.createElement("span");
-                    let editIcon = document.createElement("i");
-                    let delIcon = document.createElement("i");
+                    let taskEl = document.createElement("p");
+                    let editIcon = document.createElement("button");
+                    let delIcon = document.createElement("button");
 
+                    taskContainerEl.classList.add('list-group-item', 'd-flex', 'align-items-center'); 
+                    taskEl.classList.add('me-auto', 'fs-5', 'm-0'); 
                     checkBoxEl.setAttribute("type", "checkbox"); 
                     checkBoxEl.checked = task.isDone; 
-                    editIcon.classList.add("fa-solid", "fa-pen");
-                    delIcon.classList.add("fa-solid", "fa-trash");
-                    
-                    taskContainerEl.setAttribute('id', task.taskId); 
+                    checkBoxEl.classList.add('me-2'); 
+                    editIcon.classList.add("btn", "btn-primary", 'me-2');
+                    editIcon.innerHTML = `<i class="fa-solid fa-pencil"></i>`;
+                    delIcon.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
+                    delIcon.classList.add("btn", "btn-danger"); 
+
+                    taskDiv.setAttribute('id', task.taskId); 
                     taskEl.textContent = task.task; 
                     taskContainerEl.append(
                         checkBoxEl, 
@@ -165,7 +177,8 @@ const todoApp = (
                         editIcon,
                         delIcon
                     );
-                    taskListEl.appendChild(taskContainerEl);
+                    taskDiv.appendChild(taskContainerEl); 
+                    taskListEl.appendChild(taskDiv);
 
                     checkBoxEl.addEventListener("click", () => {
                         toggleTaskStatus(listId, task.taskId); 
@@ -210,6 +223,7 @@ createListBtnEl.addEventListener('click', () => {
 
 listRenderEl.addEventListener('click', (event) => {
     listId = event.target.parentElement.id; 
+    // event.target.parentElement.classList.add('active');  
     todoApp.displayList(listId);  
 }); 
 
