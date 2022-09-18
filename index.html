@@ -4,37 +4,44 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>Todo App</title>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    <section id="list-component">
-        <h1>Create List</h1>
-        <form onsubmit="event.preventDefault()">
-            <input type="text" id="list-name" placeholder="Create list">
-            <button id="create-btn">Create</button>
-        </form>
 
-        <section>
-            <ul id="list-render"> 
-
-            </ul>
-        </section>
-    </section>
+    <div class="container">
+        <section id="list-component" class="left-container">
+            <h1>Create List</h1>
+            <form onsubmit="event.preventDefault()">
+                <input type="text" id="list-input" placeholder="Create list">
+                <button id="create-list-btn">Create</button>
+            </form>
     
-    <section id="task-component" style="display: none">
-        <h1>Create Task</h1>
-        <form onsubmit="event.preventDefault()">
-            <input type="text" id="user-input" placeholder="Create task">
-            <button id="add-btn">Add</button>
-        </form>
-        <section>
-            <ul id="item-list">
+            <section>
+                <ul id="list-render"> 
     
-            </ul>
+                </ul>
+            </section>
         </section>
-    </section>
+        
+        <section id="task-component" class="right-container">
+            <h1>View your tasks here</h1>
+            <h3>Create Task</h3>
+            <form onsubmit="event.preventDefault()">
+                <input type="text" id="task-input" placeholder="Create task">
+                <button id="add-btn">Add</button>
+            </form>
+            <section>
+                <ul id="item-list">
+        
+                </ul>
+            </section>
+        </section>
+    </div>
     <script src="./script.js"></script>
 </body>
 </html>

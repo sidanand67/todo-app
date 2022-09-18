@@ -7,3 +7,26 @@
 .checked{
     text-decoration: line-through;
 }
+
+.container{
+    display: flex; 
+    min-height: 100vh; 
+    justify-content: space-between;
+}
+
+.left-container{
+    flex: 1; 
+    background: black; 
+    color: white; 
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+}
+
+.right-container{
+    flex: 1; 
+    border: 1px solid green;
+    display: flex; 
+    flex-direction: column;
+    align-items: center; 
+}
