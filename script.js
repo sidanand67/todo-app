@@ -20,33 +20,35 @@ const todoApp = (
         let lists = [
             {
                 id: 1,
-                listName: "hello",
+                listName: "morning routine",
+                isSelected: false, 
                 tasks: [
                     {
                         taskId: 1,
-                        task: "walk",
-                        isDone: false
+                        task: "morning walk",
+                        isDone: false,
                     },
                     {
                         taskId: 2,
-                        task: "morning",
-                        isDone: false
+                        task: "reading newspaper",
+                        isDone: false,
                     },
                 ],
             },
             {
                 id: 2,
-                listName: "grocery",
+                listName: "grocery list",
+                isSelected: false, 
                 tasks: [
                     {
                         taskId: 1,
-                        task: "mango",
-                        isDone: false 
+                        task: "milk",
+                        isDone: false,
                     },
                     {
                         taskId: 2,
-                        task: "apple",
-                        isDone: false 
+                        task: "eggs",
+                        isDone: false,
                     },
                 ],
             },
@@ -64,7 +66,13 @@ const todoApp = (
         
         let deleteList = (listId) => {
             let listIndex = lists.findIndex(list => list.id == listId);
-            lists.splice(listIndex, 1);  
+            if (lists[listIndex].tasks.length !== 0) {
+                todoApp.displayList(listId); 
+                alert('Please delete all tasks in this list.'); 
+            }
+            else {
+                lists.splice(listIndex, 1);  
+            }
             
             todoApp.viewLists(); 
         }
@@ -114,8 +122,9 @@ const todoApp = (
                 return listObj.id; 
             },
 
-            viewLists(){
+            viewLists(listId){
                 listRenderEl.innerHTML = ""; 
+
                 lists.map(list => {
                     let listDiv = document.createElement('div'); 
                     let listEl = document.createElement("li");
@@ -127,7 +136,7 @@ const todoApp = (
                     let delIcon = document.createElement("button");
 
                     listDiv.style.cursor = "pointer"; 
-                    listEl.classList.add('list-group-item', 'd-flex', 'align-items-center');
+                    listEl.classList.add('list-group-item', 'd-flex', 'align-items-center', 'focus');
                     listNameEl.classList.add('fs-4', 'm-0', 'me-auto'); 
 
                     editIcon.classList.add('btn', 'btn-primary', 'me-2'); 
@@ -224,7 +233,7 @@ const todoApp = (
     }
 )(); 
 
-let listId; 
+let listId, selectedListIndex; 
 
 todoApp.viewLists(); 
 
@@ -237,8 +246,8 @@ createListBtnEl.addEventListener('click', () => {
 }); 
 
 listRenderEl.addEventListener('click', (event) => {
-    listId = event.target.parentElement.id; 
-    // event.target.parentElement.classList.add('active');  
+    listId = event.target.parentElement.id;
+    taskComponentEl.style.display = "block"; 
     todoApp.displayList(listId);  
 }); 
 

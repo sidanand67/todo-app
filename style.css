@@ -1,3 +1,5 @@
-
+.focus p{
+    pointer-events: none; 
+}
 
 
