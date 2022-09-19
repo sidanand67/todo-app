@@ -126,10 +126,15 @@ const todoApp = (
                     let editIcon = document.createElement("button");
                     let delIcon = document.createElement("button");
 
+                    listDiv.style.cursor = "pointer"; 
                     listEl.classList.add('list-group-item', 'd-flex', 'align-items-center');
                     listNameEl.classList.add('fs-4', 'm-0', 'me-auto'); 
+
                     editIcon.classList.add('btn', 'btn-primary', 'me-2'); 
-                    editIcon.innerHTML = `<i class="fa-solid fa-pencil"></i>`; 
+                    editIcon.innerHTML = `<i class="fa-solid fa-pencil"></i>`;  
+                    editIcon.setAttribute('data-bs-toggle', 'modal'); 
+                    editIcon.setAttribute('data-bs-target', `#modal${list.id}`); 
+                    
                     delIcon.innerHTML = `<i class="fa-solid fa-trash-can"></i>`; 
                     delIcon.classList.add('btn', 'btn-danger'); 
 
@@ -139,8 +144,13 @@ const todoApp = (
                     listInputEl.value = ""; 
 
                     editIcon.addEventListener('click', () => {
-                        let listInput = prompt("Edit List Name: "); 
-                        updateList(list.id, listInput); 
+                        let listInput = prompt("Update List Name: ", list.listName);
+                        if (listInput.length == 0){
+                            alert('Please enter a valid List Name.'); 
+                        }
+                        else {
+                            updateList(list.id, listInput);   
+                        }
                     }); 
 
                     delIcon.addEventListener("click", () => {
@@ -185,8 +195,13 @@ const todoApp = (
                     })
 
                     editIcon.addEventListener("click", () => {
-                        let taskInput = prompt("Edit your task"); 
-                        updateTask(listId, task.taskId, taskInput); 
+                        let taskInput = prompt("Edit your task", task.task); 
+                        if (taskInput.length === 0){
+                            alert("Please a valid task."); 
+                        }
+                        else {
+                            updateTask(listId, task.taskId, taskInput); 
+                        }
                     });
 
                     delIcon.addEventListener("click", () => {
