@@ -115,12 +115,12 @@ const todoApp = (
                 listObj.tasks = [];
                 lists.push(listObj); 
                 
-                todoApp.viewLists(); 
+                todoApp.viewLists(listObj.id); 
 
                 return listObj.id; 
             },
 
-            viewLists(prevListId){
+            viewLists(listId=0){
                 listRenderEl.innerHTML = ""; 
 
                 lists.map(list => {
@@ -132,6 +132,10 @@ const todoApp = (
 
                     let editIcon = document.createElement("button");
                     let delIcon = document.createElement("button");
+
+                    if(list.id == listId){
+                        listEl.classList.add('active'); 
+                    }
 
                     listDiv.style.cursor = "pointer"; 
                     listEl.classList.add('list-group-item', 'd-flex', 'align-items-center', 'focus');
@@ -249,7 +253,7 @@ listRenderEl.addEventListener('click', (event) => {
     if (selectedElement) {
         selectedElement.classList.remove('active'); 
     }
-    event.target.classList.add('active'); 
+    todoApp.viewLists(listId); 
     todoApp.displayList(listId);  
 }); 
 
