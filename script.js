@@ -115,6 +115,7 @@ const todoApp = (
                 listObj.tasks = [];
                 lists.push(listObj); 
                 
+                taskComponentEl.style.display = "block";
                 todoApp.viewLists(listObj.id); 
 
                 return listObj.id; 
