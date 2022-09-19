@@ -21,7 +21,6 @@ const todoApp = (
             {
                 id: 1,
                 listName: "morning routine",
-                isSelected: false, 
                 tasks: [
                     {
                         taskId: 1,
@@ -38,7 +37,6 @@ const todoApp = (
             {
                 id: 2,
                 listName: "grocery list",
-                isSelected: false, 
                 tasks: [
                     {
                         taskId: 1,
@@ -122,7 +120,7 @@ const todoApp = (
                 return listObj.id; 
             },
 
-            viewLists(listId){
+            viewLists(prevListId){
                 listRenderEl.innerHTML = ""; 
 
                 lists.map(list => {
@@ -139,10 +137,8 @@ const todoApp = (
                     listEl.classList.add('list-group-item', 'd-flex', 'align-items-center', 'focus');
                     listNameEl.classList.add('fs-4', 'm-0', 'me-auto'); 
 
-                    editIcon.classList.add('btn', 'btn-primary', 'me-2'); 
+                    editIcon.classList.add('btn', 'btn-info', 'me-2'); 
                     editIcon.innerHTML = `<i class="fa-solid fa-pencil"></i>`;  
-                    editIcon.setAttribute('data-bs-toggle', 'modal'); 
-                    editIcon.setAttribute('data-bs-target', `#modal${list.id}`); 
                     
                     delIcon.innerHTML = `<i class="fa-solid fa-trash-can"></i>`; 
                     delIcon.classList.add('btn', 'btn-danger'); 
@@ -151,7 +147,8 @@ const todoApp = (
                     listDiv.append(listEl);
                     listRenderEl.appendChild(listDiv);
                     listInputEl.value = ""; 
-
+                    console.log(listEl.parentElement); 
+                    
                     editIcon.addEventListener('click', () => {
                         let listInput = prompt("Update List Name: ", list.listName);
                         if (listInput.length == 0){
@@ -183,7 +180,7 @@ const todoApp = (
                     checkBoxEl.setAttribute("type", "checkbox"); 
                     checkBoxEl.checked = task.isDone; 
                     checkBoxEl.classList.add('me-2'); 
-                    editIcon.classList.add("btn", "btn-primary", 'me-2');
+                    editIcon.classList.add("btn", "btn-info", 'me-2');
                     editIcon.innerHTML = `<i class="fa-solid fa-pencil"></i>`;
                     delIcon.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
                     delIcon.classList.add("btn", "btn-danger"); 
@@ -233,7 +230,7 @@ const todoApp = (
     }
 )(); 
 
-let listId, selectedListIndex; 
+let listId; 
 
 todoApp.viewLists(); 
 
@@ -247,7 +244,12 @@ createListBtnEl.addEventListener('click', () => {
 
 listRenderEl.addEventListener('click', (event) => {
     listId = event.target.parentElement.id;
-    taskComponentEl.style.display = "block"; 
+    taskComponentEl.style.display = "block";
+    let selectedElement = document.querySelector('.active');
+    if (selectedElement) {
+        selectedElement.classList.remove('active'); 
+    }
+    event.target.classList.add('active'); 
     todoApp.displayList(listId);  
 }); 
 
